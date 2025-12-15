@@ -6,6 +6,8 @@ from flask import request, session
 from models.auth import create_user, get_user_by_email, verify_password
 from models.personal import upsert_personal, get_personal
 from models.investment import upsert_profile, get_profile
+from services.llm_client import call_llm
+from models.plans import save_plan, list_plans, get_plan
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -130,6 +132,45 @@ def api_save_profile():
 
     upsert_profile(user_id, monthly, risk, horizon, markets, experience)
     return jsonify({"message": "Investment profile saved"})
+
+@app.post("/api/plan/daily")
+def api_daily_plan():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    prof = get_profile(user_id)
+    if not prof:
+        return jsonify({"error": "Please set your investment profile first"}), 400
+
+    data = request.get_json(force=True) if request.data else {}
+    note = (data.get("note") or "").strip()
+
+    # MVP: just return a disciplined routine plan
+    plan_text = call_llm("SYSTEM", "USER")  # placeholder; we’ll wire prompt_builder next
+
+    save_plan(user_id, "daily", note or "{}", plan_text)
+    return jsonify({"plan": plan_text})
+
+
+@app.get("/api/plans")
+def api_plans():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    rows = list_plans(user_id)
+    return jsonify({"plans": [dict(r) for r in rows]})
+
+
+@app.get("/api/plans/<int:plan_id>")
+def api_plan_detail(plan_id: int):
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    row = get_plan(user_id, plan_id)
+    if not row:
+        return jsonify({"error": "Not found"}), 404
+    return jsonify({"plan": dict(row)})
 
 if __name__ == "__main__":
     app.run(debug=True)

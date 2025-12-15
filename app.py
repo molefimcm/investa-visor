@@ -8,6 +8,8 @@ from models.personal import upsert_personal, get_personal
 from models.investment import upsert_profile, get_profile
 from services.llm_client import call_llm
 from models.plans import save_plan, list_plans, get_plan
+from services.events import log_event
+
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -49,6 +51,9 @@ def api_signup():
 
     user_id = create_user(email, password)
     session["user_id"] = user_id
+
+    log_event(user_id, "signup", {"email_domain": email.split("@")[-1] if "@" in email else None})
+
     return jsonify({"message": "Signup successful", "user_id": user_id})
 
 
@@ -63,6 +68,9 @@ def api_login():
         return jsonify({"error": "Invalid credentials"}), 401
 
     session["user_id"] = user["id"]
+
+    log_event(user["id"], "login")
+
     return jsonify({"message": "Login successful", "user_id": user["id"]})
 
 
@@ -131,6 +139,13 @@ def api_save_profile():
         return jsonify({"error": "Monthly invest amount must be > 0"}), 400
 
     upsert_profile(user_id, monthly, risk, horizon, markets, experience)
+
+    log_event(user_id, "profile_saved", {
+        "risk_appetite": risk,
+        "time_horizon": horizon,
+        "experience_level": experience
+    })
+
     return jsonify({"message": "Investment profile saved"})
 
 @app.post("/api/plan/daily")
@@ -150,6 +165,12 @@ def api_daily_plan():
     plan_text = call_llm("SYSTEM", "USER")  # placeholder; we’ll wire prompt_builder next
 
     save_plan(user_id, "daily", note or "{}", plan_text)
+
+    log_event(user_id, "plan_daily_generated", {
+        "note_length": len(note),
+        "mvp_mode": True
+    })
+
     return jsonify({"plan": plan_text})
 
 

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Portfolio | InvestaVisor{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1 class="page-title">Portfolio</h1>
+  <a class="btn" href="{{ url_for('home') }}">← Back</a>
+</div>
+
+<section class="panel">
+  <h3>Summary</h3>
+  <p>Total Value: {{ summary.total | default("—") }}</p>
+  <p>Return: {{ summary.return | default("—") }}</p>
+</section>
+
+<section class="panel">
+  <h3>Holdings</h3>
+  {% if holdings %}
+    <table>
+      <tr>
+        <th>Symbol</th>
+        <th>Qty</th>
+        <th>Avg Price</th>
+      </tr>
+      {% for h in holdings %}
+      <tr>
+        <td>{{ h.symbol }}</td>
+        <td>{{ h.qty }}</td>
+        <td>{{ h.avg_price }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p class="muted">No holdings yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

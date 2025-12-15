@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Insights | InvestaVisor{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1 class="page-title">AI Insights</h1>
+  <a class="btn" href="{{ url_for('home') }}">← Back</a>
+</div>
+
+<section class="panel">
+  <h3>Request Insight</h3>
+  <form method="post" action="/insights">
+    <label>Symbol</label>
+    <input type="text" name="symbol" placeholder="e.g. TSLA" required>
+
+    <label>Question / Prompt</label>
+    <textarea name="question" rows="4"
+      placeholder="Give me a high-level investment sanity check"></textarea>
+
+    <button class="btn" type="submit">Generate Insight</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h3>Latest Insight</h3>
+  {% if insight %}
+    <pre>{{ insight }}</pre>
+  {% else %}
+    <p class="muted">No insights generated yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

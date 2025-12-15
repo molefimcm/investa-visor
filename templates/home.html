@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Home | InvestaVisor{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">Dashboard</h1>
+  <p class="muted">Choose a section.</p>
+
+  <div class="grid">
+    <a class="card" href="{{ url_for('portfolio') }}">
+      <h3>Portfolio</h3>
+      <p>Holdings, allocations, performance</p>
+    </a>
+
+    <a class="card" href="{{ url_for('watchlist') }}">
+      <h3>Watchlist</h3>
+      <p>Track symbols and quick checks</p>
+    </a>
+
+    <a class="card" href="{{ url_for('insights') }}">
+      <h3>Insights</h3>
+      <p>AI summary and sanity check</p>
+    </a>
+
+    <a class="card" href="{{ url_for('journal') }}">
+      <h3>Journal</h3>
+      <p>Notes, decisions, learnings</p>
+    </a>
+
+    <a class="card" href="{{ url_for('settings') }}">
+      <h3>Settings</h3>
+      <p>Preferences and configuration</p>
+    </a>
+  </div>
+{% endblock %}

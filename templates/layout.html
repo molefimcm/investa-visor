@@ -4,28 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}InvestaVisor{% endblock %}</title>
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-  <main class="container">
-    <header class="header">
-      <h1>InvestaVisor</h1>
-      <p class="tagline">AI-powered investing clarity without prompting.</p>
-
-      <nav style="text-align:center; margin-top:10px;">
-        <a href="/" style="margin-right:12px;">Home</a>
-        <a href="/about">About</a>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="{{ url_for('home') }}">InvestaVisor</a>
+      <nav class="nav">
+        <a href="{{ url_for('home') }}">Home</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
+  <main class="container">
     {% block content %}{% endblock %}
-
-    <footer class="disclaimer">
-      {{ disclaimer }}
-    </footer>
   </main>
-
-  <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

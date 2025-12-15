@@ -5,6 +5,7 @@ from db import close_db, init_db
 from flask import request, session
 from models.auth import create_user, get_user_by_email, verify_password
 from models.personal import upsert_personal, get_personal
+from models.investment import upsert_profile, get_profile
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -100,6 +101,35 @@ def api_personal():
 
     upsert_personal(user_id, first_name, last_name, country, timezone)
     return jsonify({"message": "Personal details saved"})
+
+@app.get("/api/profile")
+def api_get_profile():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    prof = get_profile(user_id)
+    return jsonify({"profile": dict(prof) if prof else None})
+
+
+@app.post("/api/profile")
+def api_save_profile():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(force=True)
+    monthly = float(data.get("monthly_invest_amount", 0) or 0)
+    risk = data.get("risk_appetite", "balanced")
+    horizon = data.get("time_horizon", "long")
+    markets = data.get("markets", "US stocks, ETFs")
+    experience = data.get("experience_level", "beginner")
+
+    if monthly <= 0:
+        return jsonify({"error": "Monthly invest amount must be > 0"}), 400
+
+    upsert_profile(user_id, monthly, risk, horizon, markets, experience)
+    return jsonify({"message": "Investment profile saved"})
 
 if __name__ == "__main__":
     app.run(debug=True)

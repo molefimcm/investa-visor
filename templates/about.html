@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block title %}InvestaVisor{% endblock %}
+
+{% block content %}
+  <!-- AUTH -->
+  <section id="authSection" class="card">
+    <h2>Sign up / Log in</h2>
+
+    <label>Email</label>
+    <input id="email" type="email" placeholder="you@example.com" />
+
+    <label>Password</label>
+    <input id="password" type="password" placeholder="••••••••" />
+
+    <div class="row">
+      <button id="signupBtn">Sign up</button>
+      <button id="loginBtn" class="secondary">Log in</button>
+    </div>
+
+    <p id="authMsg" class="msg"></p>
+  </section>
+
+  <!-- WELCOME + LOGOUT -->
+  <section id="meSection" class="card hidden">
+    <div class="row space-between align-center">
+      <div>
+        <h2 id="welcomeTitle">Welcome</h2>
+        <p class="muted" id="welcomeSub">You’re logged in.</p>
+      </div>
+      <button id="logoutBtn" class="secondary">Logout</button>
+    </div>
+  </section>
+
+  <!-- PERSONAL DETAILS -->
+  <section id="personalSection" class="card hidden">
+    <h2>Personal details</h2>
+
+    <div class="grid2">
+      <div>
+        <label>First name</label>
+        <input id="firstName" type="text" placeholder="Molefi" />
+      </div>
+      <div>
+        <label>Last name</label>
+        <input id="lastName" type="text" placeholder="Moeketsi" />
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <label>Country</label>
+        <input id="country" type="text" placeholder="South Africa" />
+      </div>
+      <div>
+        <label>Timezone</label>
+        <input id="timezone" type="text" placeholder="Africa/Johannesburg" />
+      </div>
+    </div>
+
+    <button id="savePersonalBtn">Save personal details</button>
+    <p id="personalMsg" class="msg"></p>
+  </section>
+
+  <!-- INVESTMENT PROFILE -->
+  <section id="profileSection" class="card hidden">
+    <h2>Investment profile</h2>
+
+    <label>Monthly invest amount (USD)</label>
+    <input id="monthly" type="number" min="1" step="1" placeholder="500" />
+
+    <div class="grid2">
+      <div>
+        <label>Risk appetite</label>
+        <select id="risk">
+          <option value="conservative">Conservative</option>
+          <option value="balanced" selected>Balanced</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Time horizon</label>
+        <select id="horizon">
+          <option value="short">0–2 years</option>
+          <option value="medium">3–5 years</option>
+          <option value="long" selected>5+ years</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Markets (comma separated)</label>
+    <input id="markets" type="text" placeholder="US stocks, ETFs" />
+
+    <label>Experience level</label>
+    <select id="experience">
+      <option value="beginner" selected>Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+
+    <button id="saveProfileBtn">Save investment profile</button>
+    <p id="profileMsg" class="msg"></p>
+  </section>
+
+  <!-- DAILY PLAN -->
+  <section id="planSection" class="card hidden">
+    <h2>Daily plan</h2>
+    <label>What’s on your mind today? (optional)</label>
+    <textarea id="note" placeholder="E.g., I’m feeling nervous about market volatility…"></textarea>
+
+    <button id="generatePlanBtn">Generate today’s plan</button>
+    <div id="planOutput" class="output"></div>
+  </section>
+{% endblock %}

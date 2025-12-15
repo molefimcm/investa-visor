@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}InvestaVisor{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>InvestaVisor</h1>
+      <p class="tagline">AI-powered investing clarity without prompting.</p>
+
+      <nav style="text-align:center; margin-top:10px;">
+        <a href="/" style="margin-right:12px;">Home</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="disclaimer">
+      {{ disclaimer }}
+    </footer>
+  </main>
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

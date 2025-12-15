@@ -1,0 +1,5 @@
+body { font-family: system-ui, Arial; margin: 0; padding: 0; }
+.container { max-width: 520px; margin: 0 auto; padding: 16px; }
+.tagline { color: #666; margin-top: -8px; }
+.card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; margin: 16px 0; }
+.disclaimer { font-size: 0.8rem; color: #777; border-top: 1px solid #eee; padding-top: 10px; }

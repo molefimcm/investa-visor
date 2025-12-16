@@ -1,5 +1,5 @@
 # investa-visor
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/dkTXygwaMgs
 #### Description:
 AI-powered investing clarity without prompting.
 
@@ -52,7 +52,7 @@ investa-visor/
 │   ├── personal.py
 │   ├── investment.py
 │   ├── plans.py
-│   └── analytics.py
+│   └── insights.py
 ├── services/
 │   ├── prompt_builder.py
 │   ├── risk_engine.py

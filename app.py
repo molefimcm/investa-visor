@@ -1,27 +1,35 @@
 import os
 from flask import Flask, render_template, jsonify
+from flask import request, session
 from config import SECRET_KEY, DISCLAIMER_TEXT
 from db import close_db, init_db
-from flask import request, session
 from models.auth import create_user, get_user_by_email, verify_password
 from models.personal import upsert_personal, get_personal
 from models.investment import upsert_profile, get_profile
-from services.llm_client import call_llm
 from models.plans import save_plan, list_plans, get_plan
 from services.events import log_event
+from services.llm_client import call_llm
+from functools import wraps
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 app.teardown_appcontext(close_db)
 
+# Initializes DB: If DB or tables do not exist, create respectively based on the condition
 def ensure_db():
-    # If DB file doesn’t exist, create schema
-    if not os.path.exists("investa.db"):
-        with app.app_context():
-            init_db()
+    with app.app_context():
+        init_db()
 
 ensure_db()
+
+def login_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        if not session.get("user_id"):
+            return jsonify({"error": "Unauthorized"}), 401
+        return fn(*args, **kwargs)
+    return wrapper
 
 @app.get("/")
 def home():
@@ -110,6 +118,14 @@ def api_personal():
     timezone = (data.get("timezone") or "").strip() or None
 
     upsert_personal(user_id, first_name, last_name, country, timezone)
+
+    log_event(user_id, "personal_saved", {
+        "has_first_name": bool(first_name),
+        "has_last_name": bool(last_name),
+        "has_country": bool(country),
+        "has_timezone": bool(timezone)
+    })
+
     return jsonify({"message": "Personal details saved"})
 
 @app.get("/api/profile")

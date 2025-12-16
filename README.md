@@ -1,67 +1,32 @@
-# investa-visor
-#### Video Demo:  https://youtu.be/dkTXygwaMgs
-#### Description:
-AI-powered investing clarity without prompting.
+# InvestaVisor
 
-InvestaVisor is a lightweight investment utility designed to help everyday users build clarity, discipline, and consistent habits—without needing to understand or write AI prompts. It generates high-level guidance, sanity checks, and daily routines based on simple user inputs, using a structured prompting engine behind the scenes.
+#### Video Demo: https://youtu.be/dkTXygwaMgs
 
-InvestaVisor is not a financial advisor. It does not recommend buying or selling any assets. It is an educational and research-support tool that helps users focus, reflect, and stay disciplined.
+## Description
+InvestaVisor is an educational investment utility that helps users maintain
+clarity and discipline in stock investing without requiring AI prompting skills.
+The application generates structured daily investing plans and sanity checks
+based on a small set of user inputs.
 
-🚀 Features
+InvestaVisor is not a financial advisor and does not provide investment
+recommendations. It is intended for educational and research purposes only.
 
-Zero-prompting experience — users never write prompts; InvestaVisor structures them automatically.
+## Features
+- User signup, login, and session management
+- Capture of personal and investment profile details
+- Daily investing plan generation (MVP runs without paid AI usage)
+- Plan history tracking
+- Simple portfolio holdings tracking
+- Optional AI-ready architecture for future enhancement
+- Privacy-first design with no personal data sent to AI models
 
-Daily investing plan including focus areas, discipline reminders, and educational insights.
+## Technologies
+- Python with Flask
+- SQLite database
+- HTML, CSS, and JavaScript frontend
+- C module for basic risk allocation logic
 
-AI-ready architecture — GPT integration can be enabled post-MVP.
-
-Rule-based output for MVP — runs at zero cost with no external API calls.
-
-C module for risk allocation — small native library for speed and teaching value.
-
-Flask backend + SQLite database — simple, portable stack.
-
-PWA-ready frontend — works on mobile, desktop, and web.
-
-Privacy-first — no personal user data is sent to AI models.
-
-🏗️ Tech Stack
-
-Python (Flask) – backend REST API
-
-HTML/CSS/JS – frontend
-
-SQLite – persistent storage
-
-C – risk allocation engine (via shared library)
-
-OpenAI API (disabled for MVP) – optional future enhancement
-
-PWA setup – for mobile/desktop installation
-
-investa-visor/
-├── app.py
-├── config.py
-├── db.py
-├── schema.sql
-├── c_core/
-│   ├── risk_calc.c
-│   └── Makefile
-├── models/
-│   ├── auth.py
-│   ├── personal.py
-│   ├── investment.py
-│   ├── plans.py
-│   └── insights.py
-├── services/
-│   ├── prompt_builder.py
-│   ├── risk_engine.py
-│   ├── llm_client.py
-│   └── events.py
-├── templates/
-│   └── index.html
-└── static/
-    ├── styles.css
-    ├── main.js
-    ├── manifest.json
-    └── service-worker.js
+## How to Run
+1. Install Python 3.
+2. Create and activate a virtual environment.
+3. Install dependencies:

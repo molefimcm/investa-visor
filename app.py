@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, jsonify
-from flask import request, session
+from flask import request, session, redirect, url_for
 from config import SECRET_KEY, DISCLAIMER_TEXT
 from db import close_db, init_db
 from models.auth import create_user, get_user_by_email, verify_password
@@ -28,9 +28,15 @@ ensure_db()
 def login_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        if not session.get("user_id"):
+        if session.get("user_id"):
+            return fn(*args, **kwargs)
+
+        # API calls should get JSON
+        if request.path.startswith("/api/"):
             return jsonify({"error": "Unauthorized"}), 401
-        return fn(*args, **kwargs)
+
+        # Page routes should redirect (no crash)
+        return redirect(url_for("home"))
     return wrapper
 
 @app.get("/")
@@ -246,6 +252,20 @@ def api_plan_detail(plan_id: int):
     if not row:
         return jsonify({"error": "Not found"}), 404
     return jsonify({"plan": dict(row)})
+
+@app.get("/about")
+def about():
+    return render_template("about.html", disclaimer=DISCLAIMER_TEXT)
+
+@app.get("/analytics")
+@login_required
+def analytics():
+    from services.analytics import user_analytics
+    user_id = session["user_id"]
+    a = user_analytics(user_id)
+    return render_template("insights.html", disclaimer=DISCLAIMER_TEXT, a=a)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,32 +1,39 @@
 {% extends "layout.html" %}
-{% block title %}Insights | InvestaVisor{% endblock %}
+{% block title %}Analytics – InvestaVisor{% endblock %}
 
 {% block content %}
-<div class="page-head">
-  <h1 class="page-title">AI Insights</h1>
-  <a class="btn" href="{{ url_for('home') }}">← Back</a>
-</div>
+<section class="card">
+  <h2>Your analytics</h2>
+  <p class="muted">Lightweight usage stats for your advisory journey.</p>
 
-<section class="panel">
-  <h3>Request Insight</h3>
-  <form method="post" action="/insights">
-    <label>Symbol</label>
-    <input type="text" name="symbol" placeholder="e.g. TSLA" required>
+  <h3>Plans generated</h3>
+  <div class="output">Total plans: {{ a.total_plans }}</div>
 
-    <label>Question / Prompt</label>
-    <textarea name="question" rows="4"
-      placeholder="Give me a high-level investment sanity check"></textarea>
+  <h3>Plans by type</h3>
+  <div class="output">
+{% for row in a.plans_by_type -%}
+- {{ row.plan_type }}: {{ row.c }}
+{% else -%}
+No plans yet.
+{% endfor -%}
+  </div>
 
-    <button class="btn" type="submit">Generate Insight</button>
-  </form>
-</section>
+  <h3>Recent plans</h3>
+  <div class="output">
+{% for p in a.recent_plans -%}
+- #{{ p.id }} ({{ p.plan_type }}) – {{ p.created_at }}
+{% else -%}
+No plans yet.
+{% endfor -%}
+  </div>
 
-<section class="panel">
-  <h3>Latest Insight</h3>
-  {% if insight %}
-    <pre>{{ insight }}</pre>
-  {% else %}
-    <p class="muted">No insights generated yet.</p>
-  {% endif %}
+  <h3>Events by type</h3>
+  <div class="output">
+{% for e in a.events_by_type -%}
+- {{ e.event_type }}: {{ e.c }}
+{% else -%}
+No events yet.
+{% endfor -%}
+  </div>
 </section>
 {% endblock %}

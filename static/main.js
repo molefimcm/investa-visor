@@ -1,6 +1,19 @@
 // ---------- Helpers ----------
 const $ = (id) => document.getElementById(id);
 
+function onClick(id, handler) {
+  const el = $(id);
+  if (el) el.onclick = handler;
+  return el;
+}
+
+function setAuthVisibility(isLoggedIn) {
+  document.querySelectorAll(".requiresAuth").forEach(el => {
+    el.classList.toggle("hidden", !isLoggedIn);
+  });
+}
+
+
 function show(el) { el.classList.remove("hidden"); }
 function hide(el) { el.classList.add("hidden"); }
 
@@ -29,7 +42,7 @@ const profileSection = $("profileSection");
 const planSection = $("planSection");
 
 // ---------- Auth Handlers ----------
-$("signupBtn").onclick = async () => {
+onClick("signupBtn", async () =>  {
   setMsg("authMsg", "");
   const email = $("email").value.trim();
   const password = $("password").value;
@@ -39,9 +52,9 @@ $("signupBtn").onclick = async () => {
 
   setMsg("authMsg", "Signup successful.");
   await refreshState();
-};
-
-$("loginBtn").onclick = async () => {
+});
+ 
+onClick("loginBtn", async () => {
   setMsg("authMsg", "");
   const email = $("email").value.trim();
   const password = $("password").value;
@@ -51,9 +64,9 @@ $("loginBtn").onclick = async () => {
 
   setMsg("authMsg", "Login successful.");
   await refreshState();
-};
+});
 
-$("logoutBtn").onclick = async () => {
+onClick("logoutBtn", async () => {
   await api("/api/logout", "POST");
   hide(meSection);
   hide(personalSection);
@@ -61,10 +74,10 @@ $("logoutBtn").onclick = async () => {
   hide(planSection);
   show(authSection);
   setMsg("authMsg", "Logged out.");
-};
+});
 
 // ---------- Personal Details ----------
-$("savePersonalBtn").onclick = async () => {
+onClick("savePersonalBtn", async () => {
   setMsg("personalMsg", "");
   const payload = {
     first_name: $("firstName").value.trim(),
@@ -78,10 +91,10 @@ $("savePersonalBtn").onclick = async () => {
 
   setMsg("personalMsg", "Saved.");
   await refreshState();
-};
+});
 
 // ---------- Investment Profile ----------
-$("saveProfileBtn").onclick = async () => {
+onClick("saveProfileBtn", async () => {
   setMsg("profileMsg", "");
   const payload = {
     monthly_invest_amount: parseFloat($("monthly").value || "0"),
@@ -96,10 +109,10 @@ $("saveProfileBtn").onclick = async () => {
 
   setMsg("profileMsg", "Profile saved.");
   await refreshState();
-};
+});
 
 // ---------- Daily Plan ----------
-$("generatePlanBtn").onclick = async () => {
+onClick("generatePlanBtn", async () => {
   $("planOutput").textContent = "Generating...";
   const note = $("note").value.trim();
 
@@ -109,15 +122,20 @@ $("generatePlanBtn").onclick = async () => {
     return;
   }
   $("planOutput").textContent = data.plan || "";
-};
+});
 
 // ---------- State Refresh ----------
 async function refreshState() {
+  if (!authSection || !meSection || !personalSection || !profileSection || !planSection) {
+    return;
+  }
+
   // Check if logged in
   const me = await api("/api/me", "GET");
   const user = me.data.user;
 
   if (!user) {
+    setAuthVisibility(false);
     show(authSection);
     hide(meSection);
     hide(personalSection);
@@ -125,6 +143,8 @@ async function refreshState() {
     hide(planSection);
     return;
   }
+
+  setAuthVisibility(true);
 
   // Logged in
   hide(authSection);
@@ -155,6 +175,42 @@ async function refreshState() {
     $("experience").value = p.experience_level;
   }
 }
+
+// ---------- Mobile Menu ----------
+(function initMobileMenu() {
+  const btn = document.getElementById("menuBtn");
+  const mobileNav = document.getElementById("navMobile");
+  if (!btn || !mobileNav) return;
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isOpen = !mobileNav.classList.contains("hidden");
+    mobileNav.classList.toggle("hidden");
+    btn.setAttribute("aria-expanded", String(!isOpen));
+  });
+
+  // Close menu after clicking a link
+  mobileNav.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => {
+      mobileNav.classList.add("hidden");
+      btn.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    const isOpen = !mobileNav.classList.contains("hidden");
+    if (!isOpen) return;
+
+    const clickedInside = mobileNav.contains(e.target) || btn.contains(e.target);
+    if (!clickedInside) {
+      mobileNav.classList.add("hidden");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+})();
 
 // Run on load
 refreshState();

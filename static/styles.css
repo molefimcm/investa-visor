@@ -1,10 +1,77 @@
-:root { --border:#e5e7eb; --text:#111827; --muted:#6b7280; }
+:root { 
+  --border:#e5e7eb; 
+  --text:#111827; 
+  --muted:#6b7280; 
+}
 
-body { margin:0; font-family: system-ui, Arial, sans-serif; color: var(--text); background:#fff; }
-.container { max-width: 560px; margin: 0 auto; padding: 16px; }
-.header { text-align:center; margin-bottom: 16px; }
-.tagline { margin-top: -6px; color: var(--muted); }
+body { 
+  margin:0; 
+  font-family: system-ui, Arial, sans-serif; 
+  color: var(--text); 
+  background:#fff; 
+}
 
+/* ---- Responsive container (mobile → desktop) ---- */
+.container{
+  max-width: 560px;     /* mobile-first */
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Tablet */
+@media (min-width: 768px){
+  .container{
+    max-width: 900px;
+    padding: 24px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1200px){
+  .container{
+    max-width: 1100px;
+    padding: 32px;
+  }
+}
+
+/* ---- Header ---- */
+.header{
+  text-align:left;
+  margin-bottom: 16px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  margin:0;
+  font-size:1.6rem;
+  line-height:1.2;
+}
+
+.tagline{
+  margin-top:2px;
+  font-size:0.85rem;
+  color:var(--muted);
+}
+
+.brandLink{ 
+  display:inline-flex; 
+  align-items:center; 
+  text-decoration:none; 
+}
+
+.logoImg{ 
+  height:40px; 
+  width:auto; 
+  display:block; 
+}
+
+/* ---- Cards / Forms ---- */
 .card {
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -12,32 +79,93 @@ body { margin:0; font-family: system-ui, Arial, sans-serif; color: var(--text); 
   margin: 12px 0;
 }
 
-label { display:block; font-size: 0.9rem; margin: 10px 0 6px; color: #111; }
+@media (min-width: 768px){
+  .card{
+    padding: 20px;
+  }
+}
+
+label { 
+  display:block; 
+  font-size: 0.9rem; 
+  margin: 10px 0 6px; 
+  color: #111; 
+}
+
 input, select, textarea, button {
-  width: 100%; box-sizing: border-box;
+  width: 100%; 
+  box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px;
   font-size: 1rem;
 }
 
-textarea { min-height: 84px; resize: vertical; }
+textarea { 
+  min-height: 84px; 
+  resize: vertical; 
+}
 
-button { cursor: pointer; border: 1px solid #111827; background:#111827; color:#fff; margin-top: 10px; }
-button.secondary { background:#fff; color:#111827; }
+button { 
+  cursor: pointer; 
+  border: 1px solid #111827; 
+  background:#111827; 
+  color:#fff; 
+  margin-top: 10px; 
+}
 
-.row { display:flex; gap: 10px; margin-top: 10px; }
-.row > button { flex: 1; }
-.space-between { justify-content: space-between; }
-.align-center { align-items: center; }
+button.secondary { 
+  background:#fff; 
+  color:#111827; 
+}
 
-.grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+/* ---- Layout helpers ---- */
+.row { 
+  display:flex; 
+  gap: 10px; 
+  margin-top: 10px; 
+}
 
-.hidden { display:none; }
-.msg { margin: 10px 0 0; font-size: 0.9rem; color: #065f46; }
-.msg.error { color: #b91c1c; }
+.row > button { 
+  flex: 1; 
+}
 
+.space-between { 
+  justify-content: space-between; 
+}
+
+.align-center { 
+  align-items: center; 
+}
+
+.grid2 { 
+  display:grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px; 
+}
+
+@media (max-width: 520px) { 
+  .grid2 { 
+    grid-template-columns: 1fr; 
+  } 
+}
+
+.hidden { 
+  display:none; 
+}
+
+/* ---- Messages ---- */
+.msg { 
+  margin: 10px 0 0; 
+  font-size: 0.9rem; 
+  color: #065f46; 
+}
+
+.msg.error { 
+  color: #b91c1c; 
+}
+
+/* ---- Output / Plan ---- */
 .output {
   white-space: pre-wrap;
   margin-top: 12px;
@@ -47,6 +175,7 @@ button.secondary { background:#fff; color:#111827; }
   color: #111;
 }
 
+/* ---- Footer ---- */
 .disclaimer {
   margin-top: 16px;
   padding-top: 10px;
@@ -55,13 +184,136 @@ button.secondary { background:#fff; color:#111827; }
   color: var(--muted);
 }
 
-.navlink{
-  display:inline-block;
-  padding:10px 12px;
-  border:1px solid var(--border);
-  border-radius:10px;
+/* ---- WordPress-style navigation ---- */
+.navDesktop{
+  display:flex;
+  gap:6px;
+}
+
+.navDesktop a{
   text-decoration:none;
   color:var(--text);
+  padding:6px 8px;
+  border-radius:8px;
+  font-size:0.9rem;
+}
+
+.navDesktop a:hover{
+  background:#f9fafb;
+}
+
+/* Burger button */
+.menuBtn{
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#fff;
+  display:none;        /* desktop hidden */
+  padding:8px;
+}
+
+.menuBtn span{
+  display:block;
+  height:2px;
+  width:100%;
+  background:var(--text);
+  margin:5px 0;
+  border-radius:2px;
+}
+
+/* Mobile dropdown */
+.navMobile{
+  margin-top:8px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:6px;
+  background:#fff;
+}
+
+.navMobile a{
+  display:block;
+  padding:10px;
+  text-decoration:none;
+  color:var(--text);
+  border-radius:8px;
   font-size:0.95rem;
 }
-.navlink:hover{ background:#f9fafb; }
+
+.navMobile a + a{
+  margin-top:2px;
+}
+
+.navMobile a:hover{
+  background:#f9fafb;
+}
+
+/* Mobile breakpoint */
+@media (max-width: 640px){
+  .navDesktop{ display:none; }
+  .menuBtn{ display:block; }
+}
+
+/* ---- Collapsible cards (details/summary) ---- */
+details.card {
+  padding: 0;                 /* summary + body will handle padding */
+}
+
+details.card > .cardBody {
+  padding: 14px;
+}
+
+@media (min-width: 768px){
+  details.card > .cardBody { padding: 20px; }
+}
+
+details.card > summary.cardSummary {
+  list-style: none;           /* remove default marker */
+  cursor: pointer;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+@media (min-width: 768px){
+  details.card > summary.cardSummary { padding: 20px; }
+}
+
+details.card > summary.cardSummary::-webkit-details-marker {
+  display: none;              /* Chrome/Safari */
+}
+
+/* caret */
+details.card > summary.cardSummary::after {
+  content: "▾";
+  font-size: 1rem;
+  color: var(--muted);
+  transform: rotate(0deg);
+  transition: transform 120ms ease;
+}
+
+details.card[open] > summary.cardSummary::after {
+  transform: rotate(180deg);
+}
+
+/* subtle divider between summary and body */
+details.card[open] > summary.cardSummary {
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---- Action buttons (e.g. Logout) ---- */
+button.secondary,
+button.inline {
+  width: auto;
+  padding: 8px 14px;
+}
+
+/* Make Logout button content-sized even inside .row */
+#logoutBtn{
+  width: auto;
+  flex: 0 0 auto;   /* overrides .row > button { flex:1 } */
+  padding: 8px 14px;
+}
+

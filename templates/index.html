@@ -1,22 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>InvestaVisor</title>
-  <link rel="stylesheet" href="/static/styles.css" />
-</head>
-<body>
-  <main class="container">
-    <header class="header">
-      <h1>InvestaVisor</h1>
-      <p class="tagline">AI-powered investing clarity without prompting.</p>
-    </header>
+{% extends "layout.html" %}
 
-    <!-- AUTH -->
-    <section id="authSection" class="card">
-      <h2>Sign up / Log in</h2>
+{% block title %}InvestaVisor{% endblock %}
 
+{% block content %}
+  <!-- AUTH -->
+  <details id="authSection" class="card" open>
+    <summary class="cardSummary">
+      <span>Sign up / Log in</span>
+    </summary>
+
+    <div class="cardBody">
       <label>Email</label>
       <input id="email" type="email" placeholder="you@example.com" />
 
@@ -29,23 +22,31 @@
       </div>
 
       <p id="authMsg" class="msg"></p>
-    </section>
+    </div>
+  </details>
 
-    <!-- WELCOME + LOGOUT -->
-    <section id="meSection" class="card hidden">
-      <div class="row space-between align-center">
-        <div>
-          <h2 id="welcomeTitle">Welcome</h2>
-          <p class="muted" id="welcomeSub">You’re logged in.</p>
-        </div>
-        <button id="logoutBtn" class="secondary">Logout</button>
+  <!-- WELCOME + LOGOUT -->
+  <details id="meSection" class="card hidden" open>
+    <summary class="cardSummary">
+      <span id="welcomeTitle">Welcome</span>
+    </summary>
+
+    <div class="cardBody">
+      <div class="row space-between align-center" style="margin-top:0;">
+        <p class="muted" id="welcomeSub" style="margin:0;">You’re logged in.</p>
+        <button id="logoutBtn" class="secondary inline">Logout</button>
+
       </div>
-    </section>
+    </div>
+  </details>
 
-    <!-- PERSONAL DETAILS -->
-    <section id="personalSection" class="card hidden">
-      <h2>Personal details</h2>
+  <!-- PERSONAL DETAILS -->
+  <details id="personalSection" class="card hidden">
+    <summary class="cardSummary">
+      <span>Personal details</span>
+    </summary>
 
+    <div class="cardBody">
       <div class="grid2">
         <div>
           <label>First name</label>
@@ -70,12 +71,16 @@
 
       <button id="savePersonalBtn">Save personal details</button>
       <p id="personalMsg" class="msg"></p>
-    </section>
+    </div>
+  </details>
 
-    <!-- INVESTMENT PROFILE -->
-    <section id="profileSection" class="card hidden">
-      <h2>Investment profile</h2>
+  <!-- INVESTMENT PROFILE -->
+  <details id="profileSection" class="card hidden">
+    <summary class="cardSummary">
+      <span>Investment profile</span>
+    </summary>
 
+    <div class="cardBody">
       <label>Monthly invest amount (USD)</label>
       <input id="monthly" type="number" min="1" step="1" placeholder="500" />
 
@@ -111,24 +116,21 @@
 
       <button id="saveProfileBtn">Save investment profile</button>
       <p id="profileMsg" class="msg"></p>
-    </section>
+    </div>
+  </details>
 
-    <!-- DAILY PLAN -->
-    <section id="planSection" class="card hidden">
-      <h2>Daily plan</h2>
+  <!-- DAILY PLAN -->
+  <details id="planSection" class="card hidden">
+    <summary class="cardSummary">
+      <span>Daily plan</span>
+    </summary>
+
+    <div class="cardBody">
       <label>What’s on your mind today? (optional)</label>
       <textarea id="note" placeholder="E.g., I’m feeling nervous about market volatility…"></textarea>
 
       <button id="generatePlanBtn">Generate today’s plan</button>
-
       <div id="planOutput" class="output"></div>
-    </section>
-
-    <footer class="disclaimer">
-      {{ disclaimer }}
-    </footer>
-  </main>
-
-  <script src="/static/main.js"></script>
-</body>
-</html>
+    </div>
+  </details>
+{% endblock %}

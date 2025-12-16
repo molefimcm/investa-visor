@@ -1,0 +1,10 @@
+<svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon -->
+  <circle cx="20" cy="20" r="18" fill="#111827"></circle>
+  <path d="M12 22 L18 28 L28 14" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+
+  <!-- Text -->
+  <text x="48" y="26" font-family="system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif" font-size="18" font-weight="600" fill="#111827">
+    InvestaVisor
+  </text>
+</svg>

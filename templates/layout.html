@@ -3,25 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>{% block title %}InvestaVisor{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+
+  <!-- Favicons (must be in /static) -->
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
 </head>
+
 <body>
   <main class="container">
     <header class="header">
-      <div class="row space-between align-center">
-        <div>
-          <h1 style="margin:0">InvestaVisor</h1>
+      <div class="topbar">
+        <div class="brandBlock">
+          <a href="/" class="brandLink" aria-label="InvestaVisor Home">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="InvestaVisor" class="logoImg">
+          </a>
           <p class="tagline">AI-powered investing clarity without prompting.</p>
         </div>
 
-        <nav class="row" style="gap:8px; margin:0;">
-          <a class="navlink" href="/">Home</a>
-          <a class="navlink" href="/about">About</a>
-          <a class="navlink" href="/analytics">Analytics</a>
+        <button id="menuBtn" class="menuBtn" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="navDesktop" aria-label="Primary">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/analytics" class="requiresAuth hidden">Analytics</a>
         </nav>
       </div>
+
+      <nav id="navMobile" class="navMobile hidden" aria-label="Mobile primary">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/analytics">Analytics</a>
+      </nav>
     </header>
 
     {% block content %}{% endblock %}
@@ -31,6 +50,6 @@
     </footer>
   </main>
 
-  <script src="/static/main.js"></script>
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, jsonify
 from flask import request, session
 from config import SECRET_KEY, DISCLAIMER_TEXT
@@ -9,6 +10,7 @@ from models.investment import upsert_profile, get_profile
 from models.plans import save_plan, list_plans, get_plan
 from services.events import log_event
 from services.llm_client import call_llm
+from services.advisor import classify_investor, allocation, principles
 from functools import wraps
 
 
@@ -139,6 +141,7 @@ def api_get_profile():
 
 
 @app.post("/api/profile")
+@login_required
 def api_save_profile():
     user_id = session.get("user_id")
     if not user_id:
@@ -165,6 +168,7 @@ def api_save_profile():
     return jsonify({"message": "Investment profile saved"})
 
 @app.post("/api/plan/daily")
+@login_required
 def api_daily_plan():
     user_id = session.get("user_id")
     if not user_id:
@@ -178,9 +182,43 @@ def api_daily_plan():
     note = (data.get("note") or "").strip()
 
     # MVP: just return a disciplined routine plan
-    plan_text = call_llm("SYSTEM", "USER")  # placeholder; we’ll wire prompt_builder next
+    investor_type = classify_investor(dict(prof))
+    alloc = allocation(dict(prof))
+    rules = principles(dict(prof))
 
-    save_plan(user_id, "daily", note or "{}", plan_text)
+    context_json = json.dumps({
+        "investor_type": investor_type,
+        "monthly_invest_amount": prof["monthly_invest_amount"],
+        "risk_appetite": prof["risk_appetite"],
+        "time_horizon": prof["time_horizon"],
+        "allocation": alloc,
+        "principles": rules,
+        "user_note": note
+    })
+
+
+    prompt = f"""
+    You are a disciplined investment advisor.
+
+    Investor type: {investor_type}
+    Monthly investment amount: {prof['monthly_invest_amount']}
+    Time horizon: {prof['time_horizon']}
+    Risk appetite: {prof['risk_appetite']}
+
+    Recommended allocation: {alloc}
+    Core principles: {rules}
+
+    User note (optional): {note}
+
+    Generate a calm, reassuring daily investment guidance message.
+    No stock picks. No predictions. No trading.
+    """
+
+    plan_text = call_llm("SYSTEM", prompt)
+
+
+    # save_plan(user_id, "daily", note or "{}", plan_text)
+    save_plan(user_id, "daily", context_json, plan_text, advisor_version="v1")
 
     log_event(user_id, "plan_daily_generated", {
         "note_length": len(note),

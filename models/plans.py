@@ -1,10 +1,10 @@
 from db import get_db
 
-def save_plan(user_id: int, plan_type: str, input_context: str, response_text: str):
+def save_plan(user_id: int, plan_type: str, input_context: str, response_text: str, advisor_version: str):
     db = get_db()
     db.execute(
-        "INSERT INTO plans (user_id, plan_type, input_context, response_text) VALUES (?, ?, ?, ?)",
-        (user_id, plan_type, input_context, response_text),
+        "INSERT INTO plans (user_id, advisor_version, plan_type, input_context, response_text) VALUES (?, ?, ?, ?, ?)",
+        (user_id, advisor_version, plan_type, input_context, response_text),
     )
     db.commit()
 

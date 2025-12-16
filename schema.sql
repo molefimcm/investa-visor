@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS user_investment_profiles (
 CREATE TABLE IF NOT EXISTS plans (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
+    advisor_version TEXT DEFAULT 'v1',
     plan_type TEXT NOT NULL,
     input_context TEXT NOT NULL,
     response_text TEXT NOT NULL,

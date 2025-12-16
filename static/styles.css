@@ -54,3 +54,14 @@ button.secondary { background:#fff; color:#111827; }
   font-size: 0.8rem;
   color: var(--muted);
 }
+
+.navlink{
+  display:inline-block;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:0.95rem;
+}
+.navlink:hover{ background:#f9fafb; }
